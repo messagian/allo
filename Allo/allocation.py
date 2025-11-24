@@ -21,12 +21,14 @@ import re
 from contextlib import contextmanager
 from absl import logging
 import warnings
+import gzip
 
 #Add reads to UMR dictionary
 def addToDict(tempFile, genLand, spliceD, seq):
     count = 0
-    with open(tempFile) as f:
+    with gzip.open(tempFile, 'rb') as f:
         for line in f:
+            l = l.decode()
             l = line.strip().split('\t')
             if l[2] == "*":
                 continue
@@ -236,8 +238,9 @@ def parseUniq(tempFile, winSize, cnn_scores, AS, rc, keep):
         B = open(tempFile + "B","w+")
     
     numR = 0 #Need to get the reads bordering on the thread cuts
-    with open(tempFile) as f:
+    with gzip.open(tempFile, 'rb') as f:
         for line in f:
+            line = line.decode()
             if not line.strip():
                 break
             
@@ -403,8 +406,9 @@ def parseMulti(tempFile, winSize, genLand, modelName, cnn_scores, rc, keep, rmz,
     AL = open(tempFile + "AL","w+")
     tempFile = tempFile + "MM"
     rBlock = []
-    with open(tempFile) as f:
+    with gzip.open(tempFile, 'rb') as f:
         for line in f:
+            line = line.decode()
             if not line.strip():
                 break
             
@@ -482,8 +486,9 @@ def parseUniqPE(tempFile, winSize, cnn_scores, AS, rc, keep, r2):
     numR = 0 #Need to get the reads bordering on the thread cuts
     curRead = '' #Keep track of current read name
     pairs = {} #Dictionary used to match pairs
-    with open(tempFile) as f:
+    with gzip.open(tempFile, 'rb') as f:
         for line in f:
+            line = line.decode()
             #Exception
             if not line.strip():
                 break
@@ -807,7 +812,7 @@ def parseMultiPE(tempFile, winSize, genLand, modelName, cnn_scores, rc, keep, rm
     numR = 0 #Need to get the reads bordering on the thread cuts
     numL = 0    #Keep track of what line in a block
     curRead = '' #Keep track of current read name
-    with open(tempFile) as f:
+    with gzip.open(tempFile, 'rb') as f:
         for line in f:
             #Exception
             if not line.strip():

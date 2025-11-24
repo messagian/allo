@@ -218,7 +218,7 @@ if __name__ == '__main__':
     #Getting column where alignment score is stored in sam (different for every aligner). If none listed assumes bowtie1 -m 1 -k x
     with open(tempList[-1], 'rb') as f:
         for line in f:
-            if not line.startswith("@".decode()) and not line[2] == "*".decode():
+            if not line.startswith("@".encode()) and not line[2] == "*".encode():
                 l = line.decode()
                 break
     AS = 0
